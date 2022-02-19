@@ -3,13 +3,13 @@ import { defaultOptions, getChar } from "./util";
 
 export interface TextCryptProps {
     text:string
-    options?:{chars:string[],interval:number}
+    options?:{chars:string,interval:number}
 }
  
 export interface TextCryptState {
     value:string,
     result:string
-    options:{chars:string[],interval:number}
+    options:{chars:string,interval:number}
     
 }
 
@@ -41,9 +41,10 @@ export class TextCrypt extends React.Component<TextCryptProps, TextCryptState> {
               const oldLength = prevState.result ? prevState.value.length : 0;
               const newLength = this.state.value.length;
               const maxLength = Math.max(oldLength, newLength);
-              return {result: [...new Array(maxLength)]
+              return  {result: [...new Array(maxLength)]
                 .map((_, j) => getChar(i, j, maxLength, prevState.value, this.state.value, this.state.options.chars))
                 .join("")};
+                
       
             });
             i++;

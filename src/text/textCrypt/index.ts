@@ -1,3 +1,5 @@
-export {TextCrypt} from "./textCrypt";
-export  {useTextCrypt} from "./usetextCrypt";
 
+// export * from "./util";
+export * from './useTextCrypt'
+
+export {TextCrypt} from "./textCrypt";

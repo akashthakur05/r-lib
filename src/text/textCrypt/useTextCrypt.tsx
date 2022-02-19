@@ -1,42 +1,49 @@
 import { useEffect, useState } from "react";
-import { defaultOptions, getChar } from "./util";
+import { dencrypt, DencryptDefaultOptions, DencryptInitialOptions } from "./util";
 
-export const useTextCrypt = (options?: Partial<typeof defaultOptions>) => {
-  const [value, setValue] = useState('');
-  const [result, setResult] = useState('');
 
-  const { chars, interval } = { ...defaultOptions, ...options };
+export type DencryptReturnType = [string, ReturnType<typeof dencrypt>];
+
+
+export function useTextCrypt(): DencryptReturnType;
+export function useTextCrypt(
+  initialValue: Required<DencryptInitialOptions["initialValue"]>
+): DencryptReturnType;
+export function useTextCrypt(
+  options: DencryptDefaultOptions
+): DencryptReturnType;
+export function useTextCrypt(
+  initialValue: Required<DencryptInitialOptions["initialValue"]>,
+  options: DencryptDefaultOptions
+): DencryptReturnType;
+export function useTextCrypt(
+  v?: string | DencryptDefaultOptions,
+  o?: DencryptDefaultOptions
+) {
+  let initialValue = "";
+  let options: DencryptDefaultOptions = {};
+
+  if (typeof v === "object") {
+    options = v;
+  } else if (typeof v === "string") {
+    initialValue = v;
+    options = o ?? {};
+  }
+
+  const [result, setResult] = useState<string>();
+  const [setValue, setSetValue] = useState<ReturnType<typeof dencrypt>>();
 
   useEffect(() => {
-    let i = 0;
+    const setValue = dencrypt({
+      ...options,
+      initialValue,
+      callback: setResult,
+    });
 
-    const crypting = setInterval(() => {
-      setResult(oldValue => {
-        if (oldValue === value) {
-          clearInterval(crypting);
-          return value;
-        }
+    setSetValue(() => setValue);
+  }, []);
 
-        const oldLength = oldValue ? oldValue.length : 0;
-        const newLength = value.length;
-        const maxLength = Math.max(oldLength, newLength);
-        debugger
-        return [...new Array(maxLength)]
-          .map((_, j) => getChar(i, j, maxLength, oldValue, value, chars))
-          .join("");
+  return [result, setValue];
+}
 
-      });
-
-      i++;
-    }, interval);
-
-    return () => clearInterval(crypting);
-  }, [value, chars, interval]);
-
-  return {
-    result,
-    decode: setValue
-  };
-};
-
-export default useTextCrypt;
+export { dencrypt };

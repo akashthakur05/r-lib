@@ -5,7 +5,11 @@ export interface MousePosition {
     mouseX:number|null,
     mouseY:number|null,
 }
-
+/**
+ * A hook that executes when the mouse position is changed
+ * 
+ * @param throttle Amount of delay in ms for every event to chnage the state
+ */
 const useMousePosition = (throttle:number = 50):MousePosition => {
 
   const [mousePosition, setMousePosition] = useState<MousePosition>({

@@ -1,8 +1,14 @@
 import { useState, useLayoutEffect } from "react";
+
 export interface WindowSize{
     width:number,
     height:number
 }
+/**
+ * A hook that executes when the window is resized 
+ * 
+ * 
+ */
 const useWindowSizes = ():WindowSize => {
   const [windowSize, setWindowSize] = useState<WindowSize>({ width: 0, height: 0 });
 

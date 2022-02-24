@@ -1,2 +1,5 @@
 export * from './mousePosition'
 export * from './useWindowResize'
+export * from './useMount'
+export * from './useUnmount'
+export * from './useDocumentTitle'
